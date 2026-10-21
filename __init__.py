@@ -45,6 +45,7 @@ NODE_CLASS_MAPPINGS = {
     "BitsAndBytesQuantizationConfig": BitsAndBytesQuantizationConfig,
     "QuantoQuantizationConfig": QuantoQuantizationConfig,
     "SDNQQuantizationConfig": SDNQQuantizationConfig,
+    "ModelOptQuantizationConfig": ModelOptQuantizationConfig,
     "TorchConfig": TorchConfig,
     "CompileConfig": CompileConfig,
     "QuantizationConfig": QuantizationConfig,
@@ -53,6 +54,8 @@ NODE_CLASS_MAPPINGS = {
     "AttentionBackendConfig": AttentionBackendConfig,
     "EnvironmentVariable": EnvironmentVariable,
     "EnvironmentVariableJoiner": EnvironmentVariableJoiner,
+    "DeepCacheConfig": DeepCacheConfig,
+    "CacheDiTConfig": CacheDiTConfig,
 
     "CreateHost": CreateHost,
     "CloseHost": CloseHost,
@@ -62,6 +65,7 @@ NODE_CLASS_MAPPINGS = {
 
     # "ADSampler": ad_sampler.ADSampler,
     "FluxSampler": flux_sampler.FluxSampler,
+    "Qwen21Sampler": qwen21_sampler.Qwen21Sampler,
     "SDSampler": sd_sampler.SDSampler,
     "SDUpscaleSampler": sdup_sampler.SDUpscaleSampler,
     "SVDSampler": svd_sampler.SVDSampler,
@@ -107,6 +111,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "BitsAndBytesQuantizationConfig": "BitsAndBytesQuantizationConfig",
     "QuantoQuantizationConfig": "QuantoQuantizationConfig",
     "SDNQQuantizationConfig": "SDNQQuantizationConfig",
+    "ModelOptQuantizationConfig": "ModelOptQuantizationConfig",
     "TorchConfig": "TorchConfig",
     "CompileConfig": "CompileConfig",
     "QuantizationConfig": "QuantizationConfig",
@@ -115,6 +120,8 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "AttentionBackendConfig": "AttentionBackendConfig",
     "EnvironmentVariable": "EnvironmentVariable",
     "EnvironmentVariableJoiner": "EnvironmentVariableJoiner",
+    "DeepCacheConfig": "DeepCacheConfig",
+    "CacheDiTConfig": "CacheDiTConfig",
 
     "CreateHost": "CreateHost",
     "CloseHost": "CloseHost",
@@ -124,6 +131,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
 
     # "ADSampler": "ADSampler",
     "FluxSampler": "FluxSampler",
+    "Qwen21Sampler": "Qwen21Sampler",
     "SDSampler": "SDSampler",
     "SDUpscaleSampler": "SDUpscaleSampler",
     "SVDSampler": "SVDSampler",

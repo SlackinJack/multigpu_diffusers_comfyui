@@ -86,6 +86,30 @@ class SDNQQuantizationConfig:
         return (out,)
 
 
+class ModelOptQuantizationConfig:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "quant_type": (["INT8", "FP8", "INT4", "NF4", "NVFP4"], { "default": "INT8" }),
+                "disable_conv_quantization": TRILEAN_WITH_DEFAULT,
+                # "algorithm": (["max"], { "default": "max" }),
+            }
+        }
+    RETURN_TYPES, FUNCTION, CATEGORY = MODEL_QUANT_CONFIG, "get_config", ROOT_CATEGORY_CONFIG
+    def get_config(self, **kwargs):
+        out = {}
+        out["backend"] = out["quant_method"] = "modelopt"
+        out["algorithm"] = "max"
+        for k,v in kwargs.items():
+            if k in ["quant_type", "algorithm"]:
+                out[k] = v
+            elif k in ["disable_conv_quantization"]:
+                if trilean(v) != None:
+                    out[k] = trilean(v)
+        return (out,)
+
+
 class QuantizationConfig:
     @classmethod
     def INPUT_TYPES(s): return {

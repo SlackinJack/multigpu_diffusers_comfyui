@@ -26,7 +26,7 @@ class CreateHost:
             "master_port": MASTER_PORT,
             "backend": BACKEND,
             "cuda_visible_devices": ("STRING", { "default": "", "multiline": False }),
-            "transformers_version": (["4", "5"], { "default": "4" }),
+            # "transformers_version": (["5"], { "default": "5" }),
             "s33d": SEED,
         },
         "optional": {

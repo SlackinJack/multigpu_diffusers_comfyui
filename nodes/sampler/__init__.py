@@ -2,6 +2,7 @@ __all__ = [
     "ad_sampler",
     "flux_sampler",
     "krea2_sampler",
+    "qwen21_sampler",
     "sd_sampler",
     "sdup_sampler",
     "svd_sampler",

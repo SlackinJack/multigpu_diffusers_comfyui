@@ -1,7 +1,6 @@
 # multigpu_diffusion_comfyui
 
 ComfyUI nodes to run [multigpu_diffusion](https://github.com/SlackinJack/multigpu_diffusion).
-
 (Basically, a ComfyUI front-end to Diffusers, with support for multi-GPU environments.)
 
 
@@ -26,7 +25,7 @@ ComfyUI nodes to run [multigpu_diffusion](https://github.com/SlackinJack/multigp
 
 
 ## Known Issues:
-- Running balanced host will create device errors, use another host for now.
+- Issues will be listed here.
 
 
 ## Test Environment:

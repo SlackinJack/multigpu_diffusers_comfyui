@@ -32,6 +32,7 @@ SUPPORTED_MODEL_LIST = ([
     "flux2d",
     "flux2k",
     "krea2",
+    "qwen21",
     "sd1",
     "sd2",
     "sd3",
@@ -112,6 +113,8 @@ ATTN_BACKEND_CONFIG     = ("MD_ATTN_BACKEND_CONFIG",)
 ENV_VARS_CONFIG         = ("MD_ENV_VARS_CONFIG",)
 TIMESTEPS               = ("MD_TIMESTEPS",)
 SIGMAS                  = ("MD_SIGMAS",)
+DEEPCACHE_CONFIG        = ("MD_DEEPCACHE",)
+CACHE_DIT_CONFIG        = ("MD_CACHE_DIT",)
 
 
 PROMPT                  = ("STRING", { "default": "", "multiline": True })

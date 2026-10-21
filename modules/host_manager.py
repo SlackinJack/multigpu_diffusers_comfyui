@@ -118,7 +118,11 @@ class HostManager:
             try:
                 results[0] = requests.post(f"{address}/{endpoint}", json=data)
             except:
-                self.close_host_process(address, "Server did not respond", with_assert="Server did not respond.\nCheck console for details.")
+                self.close_host_process(
+                    address,
+                    "Server did not respond",
+                    with_assert="Server did not respond.\nCheck console for details.",
+                )
                 return None
 
         thread = threading.Thread(target=post,)
@@ -167,6 +171,11 @@ class HostManager:
                         closed = True
                         break
 
+            if closed:
+                self.log("⌛ Host was closed - delaying launch for 5 seconds...")
+                time.sleep(5)
+                self.log("ℹ️ Continuing with host launch")
+
         os.environ["OMP_NUM_THREADS"] = "1"
         if len(config["cuda_visible_devices"]) > 0:
             os.environ["CUDA_VISIBLE_DEVICES"] = config["cuda_visible_devices"]
@@ -200,7 +209,8 @@ class HostManager:
         #     has_accelerate = True
         # except: pass
 
-        venv_source = f"{get_node_dir()}/.venv_tf{config["transformers_version"]}/bin/activate"
+        # venv_source = f"{get_node_dir()}/.venv_tf{config["transformers_version"]}/bin/activate"
+        venv_source = f"{get_node_dir()}/.venv/bin/activate"
         if backend in ["asyncdiff"]:
             # if has_accelerate == True:  cmd = ["accelerate", "launch",  f'--main_process_port={config["master_port"]}', f'--num_processes={config["nproc_per_node"]}']
             # else:                       cmd = ["torchrun",              f'--master-port={config["master_port"]}',       f'--nproc_per_node={config["nproc_per_node"]}']
@@ -241,7 +251,11 @@ class HostManager:
                 pbar.update_absolute(int(current / timeout * 100), total=100)
             current += 1
             if current >= timeout:
-                self.close_host_process(port, "Timed out", with_assert="Failed to launch host within 30 seconds.\nCheck console for details.")
+                self.close_host_process(
+                    port,
+                    "Timed out",
+                    with_assert="Failed to launch host within 30 seconds.\nCheck console for details.",
+                )
 
         return f"{LOCAL_HOST}{port}"
 
@@ -277,16 +291,29 @@ class HostManager:
     def get_result(self, address, data, pbar=None):
         port = address.replace(LOCAL_HOST, "")
         config = self.__get_config_by_address(address)
-        if config is None: self.close_host_process(port, "Host not active", with_assert="Host not active.\nCheck console for details.")
+        if config is None:
+            self.close_host_process(
+                port,
+                "Host not active",
+                with_assert="Host not active.\nCheck console for details.",
+            )
         process = config["process"]
         last_config = config["last_config"]
 
         try:
             response = self.post_to_address(address, "generate", data, pbar=pbar)
         except requests.exceptions.ConnectionError as e0:
-            self.close_host_process(port, "Connection error", with_assert="Connection error.\nCheck console for details.")
+            self.close_host_process(
+                port,
+                "Connection error",
+                with_assert="Connection error.\nCheck console for details.",
+            )
         except Exception as e1:
-            self.close_host_process(port, "Exception occurred while connecting", with_assert="Exception occurred while connecting.\nCheck console for details.")
+            self.close_host_process(
+                port,
+                "Exception occurred while connecting",
+                with_assert="Exception occurred while connecting.\nCheck console for details.",
+            )
 
         try:
             assert response is not None and response.json() is not None, "No response from host.\nCheck console for details."
@@ -298,5 +325,9 @@ class HostManager:
             else:                               return output_image_b64
         except Exception as e:
             run = False
-            self.close_host_process(port, "Unknown error", with_assert=f"An error occurred while generating image.\nCheck console for details.\n\n{str(e)}")
+            self.close_host_process(
+                port,
+                "Unknown error",
+                with_assert=f"An error occurred while generating image.\nCheck console for details.\n\n{str(e)}",
+            )
 

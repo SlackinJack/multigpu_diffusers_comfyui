@@ -198,6 +198,56 @@ class CustomSigmas:
         return (s,)
 
 
+class DeepCacheConfig:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "deep_cache_interval": ("INT", { "default": 3, "min": 0, "max": INT_MAX }),
+                "deep_cache_id": ("INT", { "default": 0, "min": 0, "max": INT_MAX }),
+            }
+        }
+    
+    RETURN_TYPES, FUNCTION, CATEGORY = DEEPCACHE_CONFIG, "get", ROOT_CATEGORY_CONFIG
+    def get(self, **kwargs):
+        return (kwargs,)
+
+
+class CacheDiTConfig:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "max_warmup_steps": ("INT", { "default": 8, "min": 0, "max": INT_MAX }),
+                "max_cached_steps": ("INT", { "default": -1, "min": -1, "max": INT_MAX }),
+                "Fn_compute_blocks": ("INT", { "default": 8, "min": 0, "max": INT_MAX }),
+                "Bn_compute_blocks": ("INT", { "default": 8, "min": 0, "max": INT_MAX }),
+                "residual_diff_threshold": ("FLOAT", { "default": 0.12000, "min": 0, "max": INT_MAX, "step": 0.00001 }),
+                "enable_separate_cfg": TRILEAN_WITH_DEFAULT,
+                "enable_taylorseer": TRILEAN_WITH_DEFAULT,
+                "taylorseer_order": ("INT", { "default": 1, "min": 0, "max": INT_MAX }),
+                "enable_scm": TRILEAN_WITH_DEFAULT,
+                "scm_mask_policy": (["slow", "medium", "fast", "ultra"], { "default": "fast" }),
+                "scm_total_steps": STEPS,
+                "steps_computation_policy": (["dynamic", "static", "default"], { "default": "default" }),
+            }
+        }
+    
+    RETURN_TYPES, FUNCTION, CATEGORY = CACHE_DIT_CONFIG, "get", ROOT_CATEGORY_CONFIG
+    def get(self, **kwargs):
+        out = {}
+        for k,v in kwargs.items():
+            if k in ["enable_separate_cfg", "enable_taylorseer", "enable_scm"]:
+                if trilean(v) is not None:
+                    out[k] = v
+            elif k in ["steps_computation_policy"]:
+                if v != "default":
+                    out[k] = v
+            else:
+                out[k] = v
+        return (out,)
+
+
 class CustomSaveImage:
     # A direct copy of ComfyUI's SaveImage, but with all metadata always disabled
     def __init__(self):

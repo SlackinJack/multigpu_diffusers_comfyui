@@ -9,14 +9,12 @@ from ..multigpu_diffusion.modules.utils import *
 
 
 BALANCED_CONFIGS = {
-    "deep_cache":           BOOLEAN_DEFAULT_FALSE,
-    "deep_cache_interval":  ("INT", { "default": 3, "min": 1 }),
-    "deep_cache_id":        ("INT", { "default": 0, "min": 0 }),
 }
 
 
 BALANCED_CONFIGS_OPTIONAL = {
-
+    "cache_dit_config": CACHE_DIT_CONFIG,
+    "deepcache_config": DEEPCACHE_CONFIG,
 }
 
 

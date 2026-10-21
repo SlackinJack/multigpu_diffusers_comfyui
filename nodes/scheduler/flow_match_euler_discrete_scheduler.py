@@ -32,7 +32,7 @@ class FlowMatchEulerDiscreteScheduler:
     def get(self, **kwargs):
         scheduler_config = { "scheduler": "FM Euler" }
         for k, v in kwargs.items():
-            if k in ["num_train_timesteps", "shift", "base_shift", "max_shift", "base_image_seq_len", "max_image_seq_len", "shift_terminal", "time_shift_type", "timesteps", "sigmas"]:
+            if k in ["num_train_timesteps", "shift", "base_shift", "max_shift", "base_image_seq_len", "max_image_seq_len", "shift_terminal", "timesteps", "sigmas"]:
                 scheduler_config[k] = v
             elif k in ["time_shift_type"]:
                 if v != "default": scheduler_config[k] = v
