@@ -1,13 +1,18 @@
 import os
-from glob import glob
 
 
 def getModelFilesInFolder(folder_in, blacklist_folders=[]):
-    return __get_files_in_folder(folder_in, ["safetensors", "sft"], blacklist_folders)
+    return __get_files_in_folder(
+        folder_in, ["safetensors", "sft"], blacklist_folders
+    )
 
 
 def getModelFilesInFolderUnsafe(folder_in, blacklist_folders=[]):
-    return __get_files_in_folder(folder_in, ["safetensors", "sft", "bin", "ckpt", "pth", "gguf"], blacklist_folders)
+    return __get_files_in_folder(
+        folder_in,
+        ["safetensors", "sft", "bin", "ckpt", "pth", "gguf"],
+        blacklist_folders,
+    )
 
 
 def getModelConfigsInFolder(folder_in, blacklist_folders=[]):

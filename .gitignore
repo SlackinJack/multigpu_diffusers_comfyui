@@ -5,3 +5,4 @@ multigpu_diffusion
 .venv*
 .venv_tf4
 .venv_tf5
+/.ropeproject

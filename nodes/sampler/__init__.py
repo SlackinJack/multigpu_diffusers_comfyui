@@ -1,11 +1,7 @@
+from pathlib import Path
+
 __all__ = [
-    "ad_sampler",
-    "flux_sampler",
-    "krea2_sampler",
-    "qwen21_sampler",
-    "sd_sampler",
-    "sdup_sampler",
-    "svd_sampler",
-    "wan_sampler",
-    "zimage_sampler",
+    path.stem
+    for path in Path(__file__).parent.glob("*.py")
+    if path.name != "__init__.py" and not path.stem.startswith("_")
 ]
