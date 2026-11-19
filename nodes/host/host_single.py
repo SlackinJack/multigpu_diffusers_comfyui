@@ -1,3 +1,5 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 from ..data_types import (
     CACHE_DIT_CONFIG,
     DEEPCACHE_CONFIG,
@@ -28,3 +30,7 @@ class SingleConfig:
 
     def run(self, **kwargs):
         return (kwargs,)
+
+
+NODE_CLASS_MAPPINGS.update({"SingleConfig": SingleConfig})
+NODE_DISPLAY_NAME_MAPPINGS.update({"SingleConfig": "Single Backend"})

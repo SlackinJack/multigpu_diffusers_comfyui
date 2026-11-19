@@ -1,6 +1,6 @@
-# multigpu_diffusion_comfyui
+# multigpu_diffusers_comfyui
 
-ComfyUI nodes to run [multigpu_diffusion](https://github.com/SlackinJack/multigpu_diffusion).
+ComfyUI nodes to run [multigpu_diffusers](https://github.com/SlackinJack/multigpu_diffusers).
 (Basically, a ComfyUI front-end to Diffusers, with support for multi-GPU environments.)
 
 
@@ -11,12 +11,12 @@ ComfyUI nodes to run [multigpu_diffusion](https://github.com/SlackinJack/multigp
 ## Notes:
 - Requires **Diffusers-format** checkpoints/models.
 - Does not (and will never) use native sampling.
-- Windows and macOS are not (and probably never will be) supported.
+- Linux support only - Windows and macOS are not (and probably never will be) supported.
 - **This node uses psutil/subprocess to manage the host scripts.** You can find the calls in `modules/host_manager.py`.
 
 
 ## Setup:
-1. `cd` to `custom_nodes/multigpu_diffusion_comfyui`.
+1. `cd` to `custom_nodes/multigpu_diffusers_comfyui`.
 2. (Review and) run `setup.sh`.
 
 

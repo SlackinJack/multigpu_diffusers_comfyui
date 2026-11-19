@@ -1,3 +1,5 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 from ..data_types import (
     BOOLEAN_FALSE,
     BACKEND_CONFIG,
@@ -61,3 +63,7 @@ class AsyncDiffConfig:
 
     def run(self, **kwargs):
         return (kwargs,)
+
+
+NODE_CLASS_MAPPINGS.update({"AsyncDiffConfig": AsyncDiffConfig})
+NODE_DISPLAY_NAME_MAPPINGS.update({"AsyncDiffConfig": "AsyncDiff Backend"})

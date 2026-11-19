@@ -11,7 +11,7 @@ from ..modules.model_finder import (
     getModelConfigsInFolder,
 )
 
-from ..multigpu_diffusion.modules.utils import (
+from ..multigpu_diffusers.modules.utils import (
     pickle_and_encode_b64,
     convert_tensor_to_b64,
 )
@@ -20,7 +20,7 @@ from ..multigpu_diffusion.modules.utils import (
 cwd = os.path.dirname(__file__)
 comfy_root = os.path.dirname(os.path.dirname(os.path.dirname(cwd)))
 node_dir = os.path.join(
-    os.path.join(comfy_root, "custom_nodes"), "multigpu_diffusion_comfyui"
+    os.path.join(comfy_root, "custom_nodes"), "multigpu_diffusers_comfyui"
 )
 outputs_dir = os.path.join(comfy_root, "output")
 comfy_models_dir = os.path.join(os.path.join(comfy_root, "models"))

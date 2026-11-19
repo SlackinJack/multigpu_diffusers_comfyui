@@ -1,7 +1,9 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 import torch
 from comfy.utils import ProgressBar
 
-from ...multigpu_diffusion.modules.utils import (
+from ...multigpu_diffusers.modules.utils import (
     convert_b64_to_nhwc_tensor,
     decode_b64_and_unpickle,
     convert_image_to_hwc_tensor,
@@ -82,6 +84,10 @@ class DiffusersSampler:
         )
 
 
+NODE_CLASS_MAPPINGS.update({"DiffusersSampler": DiffusersSampler})
+NODE_DISPLAY_NAME_MAPPINGS.update({"DiffusersSampler": "Sampler (Diffusers)"})
+
+
 class DiffusersSamplerVideo:
     @classmethod
     def INPUT_TYPES(s):
@@ -107,6 +113,7 @@ class DiffusersSamplerVideo:
     CATEGORY = CATEGORY_SAMPLER
 
     def run(
+        self,
         host,
         width,
         height,
@@ -139,3 +146,9 @@ class DiffusersSamplerVideo:
             host,
             torch.stack(tuple(tensors)),
         )  # HWC -> NHWC
+
+
+NODE_CLASS_MAPPINGS.update({"DiffusersSamplerVideo": DiffusersSamplerVideo})
+NODE_DISPLAY_NAME_MAPPINGS.update(
+    {"DiffusersSamplerVideo": "Video Sampler (Diffusers)"}
+)

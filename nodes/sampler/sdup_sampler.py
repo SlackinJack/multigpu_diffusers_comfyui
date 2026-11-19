@@ -1,7 +1,9 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 import torch
 from comfy.utils import ProgressBar
 
-from ...multigpu_diffusion.modules.utils import (
+from ...multigpu_diffusers.modules.utils import (
     convert_tensor_to_b64,
     decode_b64_and_unpickle,
     convert_image_to_hwc_tensor,
@@ -101,3 +103,9 @@ class SDUpscaleSampler:
             host,
             torch.stack(tuple(tensors)),
         )  # HWC -> NHWC
+
+
+NODE_CLASS_MAPPINGS.update({"SDUpscaleSampler": SDUpscaleSampler})
+NODE_DISPLAY_NAME_MAPPINGS.update(
+    {"SDUpscaleSampler": "Sampler (Diffusers SDUpscale)"}
+)

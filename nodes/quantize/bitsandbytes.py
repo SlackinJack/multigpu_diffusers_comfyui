@@ -1,3 +1,5 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 from ..data_types import (
     BOOLEAN_FALSE,
     DTYPE,
@@ -50,3 +52,11 @@ class BitsAndBytesQuantizationConfig:
     def run(self, **kwargs):
         kwargs["backend"] = "bitsandbytes"
         return (kwargs,)
+
+
+NODE_CLASS_MAPPINGS.update(
+    {"BitsAndBytesQuantizationConfig": BitsAndBytesQuantizationConfig}
+)
+NODE_DISPLAY_NAME_MAPPINGS.update(
+    {"BitsAndBytesQuantizationConfig": "BitsAndBytes Quantize"}
+)

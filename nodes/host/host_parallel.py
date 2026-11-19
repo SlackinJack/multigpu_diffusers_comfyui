@@ -1,3 +1,5 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 from ..data_types import (
     BOOLEAN_TRUE,
     BOOLEAN_FALSE,
@@ -10,7 +12,6 @@ from ..data_types import (
 PARALLEL_CONFIGS = {
     "context_parallel": BOOLEAN_TRUE,
     "tensor_parallel": BOOLEAN_FALSE,
-    "tensor_parallel_encoders": BOOLEAN_FALSE,
     "ulysses_degree": (
         "INT",
         {
@@ -57,3 +58,7 @@ class ParallelConfig:
 
     def run(self, **kwargs):
         return (kwargs,)
+
+
+NODE_CLASS_MAPPINGS.update({"ParallelConfig": ParallelConfig})
+NODE_DISPLAY_NAME_MAPPINGS.update({"ParallelConfig": "Parallel Backend"})

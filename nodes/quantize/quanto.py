@@ -1,3 +1,5 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 from ..data_types import (
     MODULE_QUANT_CONFIG,
     CATEGORY_QUANTIZE,
@@ -23,3 +25,11 @@ class QuantoQuantizationConfig:
     def run(self, **kwargs):
         kwargs["backend"] = "quanto"
         return (kwargs,)
+
+
+NODE_CLASS_MAPPINGS.update(
+    {"QuantoQuantizationConfig": QuantoQuantizationConfig}
+)
+NODE_DISPLAY_NAME_MAPPINGS.update(
+    {"QuantoQuantizationConfig": "Quanto Quantize"}
+)

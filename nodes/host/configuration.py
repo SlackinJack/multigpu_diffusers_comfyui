@@ -1,4 +1,6 @@
-from .data_types import (
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
+from ..data_types import (
     TORCH_CONFIG,
     BOOLEAN_FALSE,
     CATEGORY_GENERAL,
@@ -42,6 +44,10 @@ class TorchConfig:
         return (kwargs,)
 
 
+NODE_CLASS_MAPPINGS.update({"TorchConfig": TorchConfig})
+NODE_DISPLAY_NAME_MAPPINGS.update({"TorchConfig": "Torch"})
+
+
 class GroupOffloadConfig:
     @classmethod
     def INPUT_TYPES(s):
@@ -60,6 +66,10 @@ class GroupOffloadConfig:
 
     def run(self, **kwargs):
         return (kwargs,)
+
+
+NODE_CLASS_MAPPINGS.update({"GroupOffloadConfig": GroupOffloadConfig})
+NODE_DISPLAY_NAME_MAPPINGS.update({"GroupOffloadConfig": "Group Offloading"})
 
 
 class OffloadConfig:
@@ -95,6 +105,10 @@ class OffloadConfig:
 
     def run(self, **kwargs):
         return (kwargs,)
+
+
+NODE_CLASS_MAPPINGS.update({"OffloadConfig": OffloadConfig})
+NODE_DISPLAY_NAME_MAPPINGS.update({"OffloadConfig": "Module Offloading"})
 
 
 class CompileConfig:
@@ -162,6 +176,10 @@ class CompileConfig:
         return (out,)
 
 
+NODE_CLASS_MAPPINGS.update({"CompileConfig": CompileConfig})
+NODE_DISPLAY_NAME_MAPPINGS.update({"CompileConfig": "Model Compile"})
+
+
 class AttentionBackendConfig:
     @classmethod
     def INPUT_TYPES(s):
@@ -173,6 +191,12 @@ class AttentionBackendConfig:
 
     def run(self, **kwargs):
         return (kwargs,)
+
+
+NODE_CLASS_MAPPINGS.update({"AttentionBackendConfig": AttentionBackendConfig})
+NODE_DISPLAY_NAME_MAPPINGS.update(
+    {"AttentionBackendConfig": "Attention Backend"}
+)
 
 
 class DeepCacheConfig:
@@ -197,6 +221,10 @@ class DeepCacheConfig:
 
     def run(self, **kwargs):
         return (kwargs,)
+
+
+NODE_CLASS_MAPPINGS.update({"DeepCacheConfig": DeepCacheConfig})
+NODE_DISPLAY_NAME_MAPPINGS.update({"DeepCacheConfig": "Deep Cache"})
 
 
 class CacheDiTConfig:
@@ -264,3 +292,7 @@ class CacheDiTConfig:
             else:
                 out[k] = v
         return (out,)
+
+
+NODE_CLASS_MAPPINGS.update({"CacheDiTConfig": CacheDiTConfig})
+NODE_DISPLAY_NAME_MAPPINGS.update({"CacheDiTConfig": "CacheDiT"})

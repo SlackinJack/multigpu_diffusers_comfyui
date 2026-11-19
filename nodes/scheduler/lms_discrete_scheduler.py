@@ -1,3 +1,5 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 from ..data_types import (
     NUM_TRAIN_TIMESTEPS,
     TRILEAN_DEFAULT,
@@ -77,3 +79,9 @@ class LMSDiscreteScheduler:
             elif trilean(v) is not None:
                 scheduler_config[k] = trilean(v)
         return ({"scheduler": scheduler_config},)
+
+
+NODE_CLASS_MAPPINGS.update({"LMSDiscreteScheduler": LMSDiscreteScheduler})
+NODE_DISPLAY_NAME_MAPPINGS.update(
+    {"LMSDiscreteScheduler": "LMSDiscreteScheduler"}
+)

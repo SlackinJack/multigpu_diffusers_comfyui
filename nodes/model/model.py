@@ -1,3 +1,5 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 import os
 
 from ..data_types import (
@@ -41,6 +43,10 @@ class CheckpointSelector:
         return (kwargs,)
 
 
+NODE_CLASS_MAPPINGS.update({"CheckpointSelector": CheckpointSelector})
+NODE_DISPLAY_NAME_MAPPINGS.update({"CheckpointSelector": "Checkpoint"})
+
+
 class ModelSelector:
     @classmethod
     def INPUT_TYPES(s):
@@ -69,6 +75,10 @@ class ModelSelector:
         return (kwargs,)
 
 
+NODE_CLASS_MAPPINGS.update({"ModelSelector": ModelSelector})
+NODE_DISPLAY_NAME_MAPPINGS.update({"ModelSelector": "Model"})
+
+
 class UnsafeModelSelector:
     @classmethod
     def INPUT_TYPES(s):
@@ -95,3 +105,7 @@ class UnsafeModelSelector:
         if len(kwargs["class_override"]) == 0:
             del kwargs["class_override"]
         return (kwargs,)
+
+
+NODE_CLASS_MAPPINGS.update({"UnsafeModelSelector": UnsafeModelSelector})
+NODE_DISPLAY_NAME_MAPPINGS.update({"UnsafeModelSelector": "Model (Unsafe)"})

@@ -5,20 +5,20 @@
 echo ""
 echo "########## Clean Up Workspace ##########"
 echo ""
-rm -r .venv multigpu_diffusion
+rm -r .venv multigpu_diffusers
 find -iname "__pycache__" | xargs rm -r
 
 
 echo ""
-echo "########## Clone multigpu_diffusion ##########"
+echo "########## Clone multigpu_diffusers ##########"
 echo ""
-git clone https://github.com/slackinjack/multigpu_diffusion --depth=1
+git clone https://github.com/slackinjack/multigpu_diffusers --depth=1
 
 
 echo ""
-echo "########## Setup multigpu_diffusion ##########"
+echo "########## Setup multigpu_diffusers ##########"
 echo ""
-cd multigpu_diffusion
+cd multigpu_diffusers
 bash setup.sh
 cd ..
 
@@ -26,8 +26,8 @@ cd ..
 echo ""
 echo "########## Setup .venv ##########"
 echo ""
-cp multigpu_diffusion/requirements.txt req_multi.txt
-cp multigpu_diffusion/AsyncDiff/requirements.txt req_async.txt
+cp multigpu_diffusers/requirements.txt req_multi.txt
+cp multigpu_diffusers/AsyncDiff/requirements.txt req_async.txt
 python3 -m venv .venv
 source .venv/bin/activate && pip install --no-build-isolation -r req_async.txt
 source .venv/bin/activate && pip install --no-build-isolation -r req_multi.txt

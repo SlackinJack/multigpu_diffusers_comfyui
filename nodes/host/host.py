@@ -1,3 +1,5 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 from comfy.utils import ProgressBar
 
 from ...modules.host_manager import HostManager
@@ -6,7 +8,7 @@ from ..data_types import (
     MASTER_PORT,
     BACKEND,
     SEED,
-    ENVIRON_VAR,
+    PARAM,
     HOST,
     CATEGORY_HOST,
     BACKEND_CONFIG,
@@ -49,7 +51,7 @@ class CreateHost:
                 "s33d": SEED,
             },
             "optional": {
-                "environ_vars": ENVIRON_VAR,
+                "environ_vars": PARAM,
             },
         }
 
@@ -65,6 +67,10 @@ class CreateHost:
         pbar = ProgressBar(100)
         host = hm.launch_host(kwargs, pbar=pbar)
         return (host,)
+
+
+NODE_CLASS_MAPPINGS.update({"CreateHost": CreateHost})
+NODE_DISPLAY_NAME_MAPPINGS.update({"CreateHost": "Create Host"})
 
 
 class CloseHost:
@@ -84,6 +90,10 @@ class CloseHost:
     def run(self, host, obj):
         hm.close_host_process(host, "Closed by node")
         return (obj,)
+
+
+NODE_CLASS_MAPPINGS.update({"CloseHost": CloseHost})
+NODE_DISPLAY_NAME_MAPPINGS.update({"CloseHost": "Close Host"})
 
 
 class ApplyPipeline:
@@ -138,6 +148,10 @@ Check console for details.""",
         return (host,)
 
 
+NODE_CLASS_MAPPINGS.update({"ApplyPipeline": ApplyPipeline})
+NODE_DISPLAY_NAME_MAPPINGS.update({"ApplyPipeline": "Apply Pipeline"})
+
+
 class SleepHost:
     @classmethod
     def INPUT_TYPES(s):
@@ -171,6 +185,10 @@ class SleepHost:
         )
 
 
+NODE_CLASS_MAPPINGS.update({"SleepHost": SleepHost})
+NODE_DISPLAY_NAME_MAPPINGS.update({"SleepHost": "Sleep Host"})
+
+
 class OffloadPipeline:
     @classmethod
     def INPUT_TYPES(s):
@@ -193,3 +211,7 @@ class OffloadPipeline:
             host,
             obj,
         )
+
+
+NODE_CLASS_MAPPINGS.update({"OffloadPipeline": OffloadPipeline})
+NODE_DISPLAY_NAME_MAPPINGS.update({"OffloadPipeline": "Offload Pipeline"})

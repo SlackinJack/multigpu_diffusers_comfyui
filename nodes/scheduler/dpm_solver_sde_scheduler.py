@@ -1,3 +1,5 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 from ..data_types import (
     NUM_TRAIN_TIMESTEPS,
     TRILEAN_DEFAULT,
@@ -78,3 +80,9 @@ class DPMSolverSDEScheduler:
             elif trilean(v) is not None:
                 scheduler_config[k] = trilean(v)
         return ({"scheduler": scheduler_config},)
+
+
+NODE_CLASS_MAPPINGS.update({"DPMSolverSDEScheduler": DPMSolverSDEScheduler})
+NODE_DISPLAY_NAME_MAPPINGS.update(
+    {"DPMSolverSDEScheduler": "DPMSolverSDEScheduler"}
+)

@@ -1,3 +1,5 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 from ..data_types import (
     TRILEAN_DEFAULT,
     MODULE_QUANT_CONFIG,
@@ -35,3 +37,11 @@ class ModelOptQuantizationConfig:
                 if trilean(v) is not None:
                     out[k] = trilean(v)
         return (out,)
+
+
+NODE_CLASS_MAPPINGS.update(
+    {"ModelOptQuantizationConfig": ModelOptQuantizationConfig}
+)
+NODE_DISPLAY_NAME_MAPPINGS.update(
+    {"ModelOptQuantizationConfig": "ModelOpt Quantize"}
+)

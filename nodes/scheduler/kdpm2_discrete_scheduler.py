@@ -1,3 +1,5 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 from ..data_types import (
     NUM_TRAIN_TIMESTEPS,
     TRILEAN_DEFAULT,
@@ -72,3 +74,9 @@ class KDPM2DiscreteScheduler:
             elif trilean(v) is not None:
                 scheduler_config[k] = trilean(v)
         return ({"scheduler": scheduler_config},)
+
+
+NODE_CLASS_MAPPINGS.update({"KDPM2DiscreteScheduler": KDPM2DiscreteScheduler})
+NODE_DISPLAY_NAME_MAPPINGS.update(
+    {"KDPM2DiscreteScheduler": "KDPM2DiscreteScheduler"}
+)

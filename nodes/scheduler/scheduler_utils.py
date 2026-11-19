@@ -1,3 +1,5 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 from ..data_types import (
     TIMESTEPS,
     SIGMAS,
@@ -28,6 +30,10 @@ class CustomTimesteps:
         return (t,)
 
 
+NODE_CLASS_MAPPINGS.update({"CustomTimesteps": CustomTimesteps})
+NODE_DISPLAY_NAME_MAPPINGS.update({"CustomTimesteps": "CustomTimesteps"})
+
+
 class CustomSigmas:
     @classmethod
     def INPUT_TYPES(s):
@@ -48,3 +54,7 @@ class CustomSigmas:
         s = sigmas_csv.replace("\n", "").replace(" ", "").split(",")
         s = [float(x) for x in s]
         return (s,)
+
+
+NODE_CLASS_MAPPINGS.update({"CustomSigmas": CustomSigmas})
+NODE_DISPLAY_NAME_MAPPINGS.update({"CustomSigmas": "CustomSigmas"})

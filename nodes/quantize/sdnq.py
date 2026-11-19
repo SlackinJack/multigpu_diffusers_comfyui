@@ -1,3 +1,5 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 from ..data_types import (
     TRILEAN_DEFAULT,
     INT_MIN,
@@ -122,3 +124,7 @@ class SDNQQuantizationConfig:
             else:
                 out[k] = v
         return (out,)
+
+
+NODE_CLASS_MAPPINGS.update({"SDNQQuantizationConfig": SDNQQuantizationConfig})
+NODE_DISPLAY_NAME_MAPPINGS.update({"SDNQQuantizationConfig": "SDNQ Quantize"})

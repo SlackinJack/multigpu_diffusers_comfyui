@@ -10,7 +10,6 @@ import traceback
 from termcolor import colored
 
 
-# from ..multigpu_diffusion.modules.utils import *
 from ..nodes.data_types import get_node_dir
 
 
@@ -155,19 +154,23 @@ Check console for details.""",
         current_config = self.configs.get(str(port))
         if current_config is not None:
             closed = False
-            process, backend, last_config = (
+            current_process, current_backend, last_config = (
                 current_config.get("process"),
                 current_config.get("backend"),
                 current_config.get("last_config"),
             )
 
             if not closed and (
-                process is None or backend is None or last_config is None
+                current_process is None
+                or current_backend is None
+                or last_config is None
             ):
                 self.close_host_process(port, "Invalid host configuration")
                 closed = True
 
-            if not closed and (backend != backend or len(backend) == 0):
+            if not closed and (
+                current_backend != backend or len(current_backend) == 0
+            ):
                 self.close_host_process(port, "Backend changed")
                 closed = True
 
@@ -219,6 +222,7 @@ Check console for details.""",
             env_vars = config.pop("environ_vars")
             for k, v in env_vars.items():
                 os.environ[k] = str(v)
+                self.log(f"ℹ️ Applied environment variable: {k}: {str(v)}")
 
         venv_source = f"{get_node_dir()}/.venv/bin/activate"
         if backend in ["asyncdiff", "parallel"]:
@@ -239,7 +243,7 @@ Check console for details.""",
             cmd = ["source", venv_source, "&&", "python3"]
             # raise NotImplementedError
         cmd += [
-            f"{get_node_dir()}/multigpu_diffusion/host_{backend}.py",
+            f"{get_node_dir()}/multigpu_diffusers/host_{backend}.py",
             f"--port={port}",
         ]
 

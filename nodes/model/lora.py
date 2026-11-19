@@ -1,3 +1,5 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 from ..data_types import (
     LORAS,
     LORA_WEIGHT,
@@ -20,6 +22,10 @@ class LoraSelector:
         return ({f"{get_models_dir()}/loras/{lora}": weight},)
 
 
+NODE_CLASS_MAPPINGS.update({"LoraSelector": LoraSelector})
+NODE_DISPLAY_NAME_MAPPINGS.update({"LoraSelector": "Lora"})
+
+
 class MultiLoraJoiner:
     @classmethod
     def INPUT_TYPES(s):
@@ -37,6 +43,10 @@ class MultiLoraJoiner:
                 for adapter, scale in mapping.items()
             },
         )
+
+
+NODE_CLASS_MAPPINGS.update({"MultiLoraJoiner": MultiLoraJoiner})
+NODE_DISPLAY_NAME_MAPPINGS.update({"MultiLoraJoiner": "Lora Joiner"})
 
 
 class MultiLoraJoinerMini:
@@ -58,6 +68,12 @@ class MultiLoraJoinerMini:
         )
 
 
+NODE_CLASS_MAPPINGS.update({"MultiLoraJoinerMini": MultiLoraJoinerMini})
+NODE_DISPLAY_NAME_MAPPINGS.update(
+    {"MultiLoraJoinerMini": "Lora Joiner (Mini)"}
+)
+
+
 class MultiLoraJoinerLarge:
     @classmethod
     def INPUT_TYPES(s):
@@ -75,3 +91,9 @@ class MultiLoraJoinerLarge:
                 for adapter, scale in mapping.items()
             },
         )
+
+
+NODE_CLASS_MAPPINGS.update({"MultiLoraJoinerLarge": MultiLoraJoinerLarge})
+NODE_DISPLAY_NAME_MAPPINGS.update(
+    {"MultiLoraJoinerLarge": "Lora Joiner (Large)"}
+)

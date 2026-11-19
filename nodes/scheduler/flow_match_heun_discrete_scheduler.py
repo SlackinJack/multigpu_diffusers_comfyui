@@ -1,3 +1,5 @@
+from .__registry__ import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
 from ..data_types import (
     NUM_TRAIN_TIMESTEPS,
     PARAM,
@@ -32,3 +34,11 @@ class FlowMatchHeunDiscreteScheduler:
             # elif trilean(v) != None:
             #     scheduler_config[k] = trilean(v)
         return ({"scheduler": scheduler_config},)
+
+
+NODE_CLASS_MAPPINGS.update(
+    {"FlowMatchHeunDiscreteScheduler": FlowMatchHeunDiscreteScheduler}
+)
+NODE_DISPLAY_NAME_MAPPINGS.update(
+    {"FlowMatchHeunDiscreteScheduler": "FlowMatchHeunDiscreteScheduler"}
+)
