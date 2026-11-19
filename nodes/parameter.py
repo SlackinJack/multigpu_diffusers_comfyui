@@ -92,9 +92,7 @@ class ParameterJoinerMini:
     CATEGORY = CATEGORY_PARAMETER
 
     def run(self, **kwargs):
-        return (
-            {k: v for mapping in kwargs.values() for k, v in mapping.items()},
-        )
+        return ({k: v for mapping in kwargs.values() for k, v in mapping.items()},)
 
 
 class ParameterJoiner:
@@ -107,9 +105,7 @@ class ParameterJoiner:
     CATEGORY = CATEGORY_PARAMETER
 
     def run(self, **kwargs):
-        return (
-            {k: v for mapping in kwargs.values() for k, v in mapping.items()},
-        )
+        return ({k: v for mapping in kwargs.values() for k, v in mapping.items()},)
 
 
 class ParameterJoinerLarge:
@@ -122,6 +118,4 @@ class ParameterJoinerLarge:
     CATEGORY = CATEGORY_PARAMETER
 
     def run(self, **kwargs):
-        return (
-            {k: v for mapping in kwargs.values() for k, v in mapping.items()},
-        )
+        return ({k: v for mapping in kwargs.values() for k, v in mapping.items()},)

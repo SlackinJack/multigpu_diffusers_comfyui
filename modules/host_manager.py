@@ -161,16 +161,12 @@ Check console for details.""",
             )
 
             if not closed and (
-                current_process is None
-                or current_backend is None
-                or last_config is None
+                current_process is None or current_backend is None or last_config is None
             ):
                 self.close_host_process(port, "Invalid host configuration")
                 closed = True
 
-            if not closed and (
-                current_backend != backend or len(current_backend) == 0
-            ):
+            if not closed and (current_backend != backend or len(current_backend) == 0):
                 self.close_host_process(port, "Backend changed")
                 closed = True
 
@@ -225,7 +221,7 @@ Check console for details.""",
                 self.log(f"ℹ️ Applied environment variable: {k}: {str(v)}")
 
         venv_source = f"{get_node_dir()}/.venv/bin/activate"
-        if backend in ["asyncdiff", "parallel"]:
+        if backend in ["asyncdiff", "deepspeed", "fsdp", "parallel"]:
             cmd = [
                 "source",
                 venv_source,

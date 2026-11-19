@@ -19,9 +19,7 @@ from ..multigpu_diffusers.modules.utils import (
 
 cwd = os.path.dirname(__file__)
 comfy_root = os.path.dirname(os.path.dirname(os.path.dirname(cwd)))
-node_dir = os.path.join(
-    os.path.join(comfy_root, "custom_nodes"), "multigpu_diffusers_comfyui"
-)
+node_dir = os.path.join(os.path.join(comfy_root, "custom_nodes"), "multigpu_diffusers_comfyui")
 outputs_dir = os.path.join(comfy_root, "output")
 comfy_models_dir = os.path.join(os.path.join(comfy_root, "models"))
 checkpoints = getModelSubfoldersInFolder(comfy_models_dir, ["loras"])
@@ -97,11 +95,15 @@ DEVICE_MAP = (
     ],
     {"default": "none"},
 )
+MODEL_TARGETS = (
+    ["transformer", "text_encoder", "text_encoder_2", "text_encoder_3", "vae", "controlnet"],
+    {"default": "transformer"},
+)
 
 
 HOST = ("_HOST",)
 HOST_CONFIG = ("_HOST_CONFIG",)
-BACKEND = (["asyncdiff", "parallel", "single"], {"default": "parallel"})
+BACKEND = (["asyncdiff", "deepspeed", "fsdp", "parallel", "single"], {"default": "parallel"})
 BACKEND_CONFIG = ("_BACKEND_CONFIG",)
 PORT = ("INT", {"default": 6000, "min": 1025, "max": 65535})
 MASTER_PORT = ("INT", {"default": 29400, "min": 1025, "max": 65535})

@@ -23,6 +23,7 @@ from ..data_types import (
     GROUP_OFFLOAD_CONFIG,
     ATTN_BACKEND_CONFIG,
     INT_MAX,
+    CHECKPOINT,
 )
 
 
@@ -61,9 +62,7 @@ class CreateHost:
 
     def run(self, **kwargs):
         kwargs.pop("s33d")
-        kwargs["cuda_visible_devices"] = kwargs[
-            "cuda_visible_devices"
-        ].replace(" ", "")
+        kwargs["cuda_visible_devices"] = kwargs["cuda_visible_devices"].replace(" ", "")
         pbar = ProgressBar(100)
         host = hm.launch_host(kwargs, pbar=pbar)
         return (host,)
@@ -104,7 +103,7 @@ class ApplyPipeline:
                 "host": HOST,
                 "backend": BACKEND_CONFIG,
                 "torch_dtype": DTYPE,
-                "checkpoint": MODEL,
+                "checkpoint": CHECKPOINT,
                 "vae_fp16": BOOLEAN_FALSE,
                 "enable_vae_tiling": BOOLEAN_FALSE,
                 "enable_vae_slicing": BOOLEAN_FALSE,
@@ -115,12 +114,13 @@ class ApplyPipeline:
             },
             "optional": {
                 "lora": LORA,
-                "transformer": MODEL,
-                "vae": MODEL,
-                "control_net": MODEL,
-                "text_encoder": MODEL,
-                "text_encoder_2": MODEL,
-                "text_encoder_3": MODEL,
+                # "transformer": MODEL,
+                # "vae": MODEL,
+                # "control_net": MODEL,
+                # "text_encoder": MODEL,
+                # "text_encoder_2": MODEL,
+                # "text_encoder_3": MODEL,
+                "models": MODEL,
                 "compile": COMPILE_CONFIG,
                 "quantize": QUANT_CONFIG,
                 "torch": TORCH_CONFIG,
