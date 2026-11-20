@@ -6,7 +6,8 @@ from ...modules.host_manager import HostManager
 from ..data_types import (
     PORT,
     MASTER_PORT,
-    BACKEND,
+    # BACKEND,
+    BACKEND_CONFIG,
     SEED,
     PARAM,
     HOST,
@@ -41,7 +42,7 @@ class CreateHost:
             "required": {
                 "port": PORT,
                 "master_port": MASTER_PORT,
-                "backend": BACKEND,
+                "backend": BACKEND_CONFIG,
                 "cuda_visible_devices": (
                     "STRING",
                     {
@@ -101,7 +102,7 @@ class ApplyPipeline:
         return {
             "required": {
                 "host": HOST,
-                "backend": BACKEND_CONFIG,
+                # "backend": BACKEND_CONFIG,
                 "torch_dtype": DTYPE,
                 "checkpoint": CHECKPOINT,
                 "vae_fp16": BOOLEAN_FALSE,
@@ -138,13 +139,9 @@ class ApplyPipeline:
         pbar = ProgressBar(100)
         response = hm.post_to_address(host, "apply", kwargs, pbar=pbar)
         if response is None or response.status_code != 200:
-            hm.close_host_process(
-                host,
-                "Failed to initialize pipeline",
-                with_assert="""Failed to initialize pipeline.
+            hm.close_host_process(host, "Failed to initialize pipeline", with_assert="""Failed to initialize pipeline.
 
-Check console for details.""",
-            )
+Check console for details.""")
         return (host,)
 
 
@@ -179,10 +176,7 @@ class SleepHost:
         data = {"sleep": True, "time": time}
         response = hm.post_to_address(host, "sleep", data, pbar=pbar)
         # TODO: maybe do something with response
-        return (
-            host,
-            obj,
-        )
+        return (host, obj,)
 
 
 NODE_CLASS_MAPPINGS.update({"SleepHost": SleepHost})
@@ -207,10 +201,7 @@ class OffloadPipeline:
         pbar = ProgressBar(100)
         response = hm.get_from_address(host, "offload", pbar=pbar)
         # TODO: maybe do something with response
-        return (
-            host,
-            obj,
-        )
+        return (host, obj,)
 
 
 NODE_CLASS_MAPPINGS.update({"OffloadPipeline": OffloadPipeline})

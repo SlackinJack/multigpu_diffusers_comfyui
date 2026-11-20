@@ -57,6 +57,7 @@ class ParallelConfig:
     CATEGORY = CATEGORY_HOST
 
     def run(self, **kwargs):
+        kwargs["backend_name"] = "parallel"
         return (kwargs,)
 
 

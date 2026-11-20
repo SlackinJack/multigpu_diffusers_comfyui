@@ -62,6 +62,7 @@ class AsyncDiffConfig:
     CATEGORY = CATEGORY_HOST
 
     def run(self, **kwargs):
+        kwargs["backend_name"] = "asyncdiff"
         return (kwargs,)
 
 

@@ -199,7 +199,10 @@ def handle_parameter(key, value):
     if key in ["latent", "latents"]:
         return (key, pickle_and_encode_b64(value["samples"]))
     elif key in ["image", "images", "control_image", "ip_image"]:
-        return (key, convert_tensor_to_b64(value.squeeze(0)))
+        if hasattr(value, "squeeze"):
+            return (key, convert_tensor_to_b64(value.squeeze(0)))
+        else:
+            return (key, pickle_and_encode_b64(value["samples"]))
     elif isinstance(value, dict) and value.get("scheduler") is not None:
         return ("scheduler", json.dumps(value))
     elif (

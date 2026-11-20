@@ -22,7 +22,6 @@ class HostManager:
         # {
         #    "port": {
         #        "process": process,
-        #        "backend": backend,
         #        "last_config": last_config,
         #        "pipeline": pipeline,
         #    }
@@ -33,9 +32,7 @@ class HostManager:
             logger.handlers.clear()
         handler = logging.StreamHandler()
         handler.setLevel(logging.INFO)
-        formatter = logging.Formatter(
-            fmt=colored("[ Node ]: %(message)s", "white", attrs=["bold"])
-        )
+        formatter = logging.Formatter(fmt=colored("[ Node ]: %(message)s", "white", attrs=["bold"]))
         handler.setFormatter(formatter)
         logger.addHandler(handler)
         logger.propagate = False
@@ -59,11 +56,7 @@ class HostManager:
         address = address.replace(LOCAL_HOST, "")
         config = self.configs.get(address)
         if config is None:
-            self.close_host_process(
-                address,
-                "Host not active",
-                with_assert="Host not active.\nCheck console for details.",
-            )
+            self.close_host_process(address, "Host not active", with_assert="Host not active.\nCheck console for details.")
         else:
             config["pipeline"] = value
         return
@@ -77,9 +70,7 @@ class HostManager:
             pass
         return
 
-    def get_from_address(
-        self, address, endpoint, allow_error=False, pbar=None
-    ):
+    def get_from_address(self, address, endpoint, allow_error=False, pbar=None):
         if LOCAL_HOST not in address:
             address = LOCAL_HOST + address
         if endpoint not in ["initialize", "progress"]:
@@ -96,9 +87,7 @@ class HostManager:
                     self.close_host_process(address, "Server did not respond")
             return
 
-        thread = threading.Thread(
-            target=get,
-        )
+        thread = threading.Thread(target=get,)
         thread.start()
         if pbar is not None:
             pbar.update_absolute(0, total=100)
@@ -115,6 +104,7 @@ class HostManager:
         match endpoint:
             case "apply":
                 self.__update_config_pipeline(address, data)
+                data["backend"] = self.configs[address.replace(LOCAL_HOST, "")]["last_config"]["backend"]
             case _:
                 pass
         self.log(f"ℹ️ Sending POST request to: {address}/{endpoint}")
@@ -125,17 +115,10 @@ class HostManager:
             try:
                 results[0] = requests.post(f"{address}/{endpoint}", json=data)
             except Exception:
-                self.close_host_process(
-                    address,
-                    "Server did not respond",
-                    with_assert="""Server did not respond.
-Check console for details.""",
-                )
+                self.close_host_process(address, "Server did not respond", with_assert="Server did not respond.\nCheck console for details.")
                 return None
 
-        thread = threading.Thread(
-            target=post,
-        )
+        thread = threading.Thread(target=post,)
         thread.start()
         if pbar is not None:
             pbar.update_absolute(0, total=100)
@@ -150,27 +133,17 @@ Check console for details.""",
         if pbar is not None:
             pbar.update_absolute(0, total=100)
         port = str(config.get("port"))
-        backend = config.get("backend")
         current_config = self.configs.get(str(port))
         if current_config is not None:
             closed = False
-            current_process, current_backend, last_config = (
-                current_config.get("process"),
-                current_config.get("backend"),
-                current_config.get("last_config"),
-            )
+            current_process = current_config.get("process")
+            last_config = current_config.get("last_config")
 
-            if not closed and (
-                current_process is None or current_backend is None or last_config is None
-            ):
+            if closed == False and (current_process is None or last_config is None):
                 self.close_host_process(port, "Invalid host configuration")
                 closed = True
 
-            if not closed and (current_backend != backend or len(current_backend) == 0):
-                self.close_host_process(port, "Backend changed")
-                closed = True
-
-            if not closed:
+            if closed == False:
                 for k, v in last_config.items():
                     if k not in config:
                         self.close_host_process(port, "Updated configuration")
@@ -186,10 +159,8 @@ Check console for details.""",
                         closed = True
                         break
 
-            if closed:
-                self.log(
-                    "⌛ Host was closed - delaying launch for 5 seconds..."
-                )
+            if closed == True:
+                self.log("⌛ Host was closed - delaying launch for 5 seconds...")
                 time.sleep(5)
                 self.log("ℹ️ Continuing with host launch")
 
@@ -220,8 +191,9 @@ Check console for details.""",
                 os.environ[k] = str(v)
                 self.log(f"ℹ️ Applied environment variable: {k}: {str(v)}")
 
+        backend_name = config.get("backend").get("backend_name")
         venv_source = f"{get_node_dir()}/.venv/bin/activate"
-        if backend in ["asyncdiff", "deepspeed", "fsdp", "parallel"]:
+        if backend_name in ["asyncdiff", "deepspeed", "fsdp", "parallel"]:
             cmd = [
                 "source",
                 venv_source,
@@ -230,16 +202,18 @@ Check console for details.""",
                 f"--master-port={config['master_port']}",
             ]
             if len(config["cuda_visible_devices"]) > 0:
+                self.log(f"ℹ️ Visible CUDA devices: {config["cuda_visible_devices"]}")
                 cmd += [
                     f"--nproc_per_node={len(config['cuda_visible_devices'].split(','))}"
                 ]
             else:
+                self.log(f"ℹ️ Number of CUDA devices: {torch.cuda.device_count()}")
                 cmd += [f"--nproc_per_node={torch.cuda.device_count()}"]
         else:
             cmd = ["source", venv_source, "&&", "python3"]
             # raise NotImplementedError
         cmd += [
-            f"{get_node_dir()}/multigpu_diffusers/host_{backend}.py",
+            f"{get_node_dir()}/multigpu_diffusers/host_{backend_name}.py",
             f"--port={port}",
         ]
 
@@ -251,7 +225,6 @@ Check console for details.""",
         process = subprocess.Popen(["bash", "-lc"] + [" ".join(cmd)])
         new_config = {
             "process": process,
-            "backend": backend,
             "last_config": config,
             "pipeline": None,
         }
@@ -261,9 +234,7 @@ Check console for details.""",
         timeout = 60
         while True:
             try:
-                response = self.get_from_address(
-                    LOCAL_HOST + port, "initialize", allow_error=True
-                )
+                response = self.get_from_address(LOCAL_HOST + port, "initialize", allow_error=True)
                 if response is not None and response.status_code == 200:
                     break
             except requests.exceptions.RequestException:
@@ -273,12 +244,7 @@ Check console for details.""",
                 pbar.update_absolute(int(current / timeout * 100), total=100)
             current += 1
             if current >= timeout:
-                self.close_host_process(
-                    port,
-                    "Timed out",
-                    with_assert=f"""Failed to launch host within {str(timeout)} seconds.
-Check console for details.""",
-                )
+                self.close_host_process(port, "Timed out", with_assert=f"Failed to launch host within {str(timeout)} seconds.\nCheck console for details.")
 
         return f"{LOCAL_HOST}{port}"
 
@@ -290,9 +256,7 @@ Check console for details.""",
 
         config = self.configs.get(port)
         if config is None:
-            self.log(
-                f"❓ No host config - assuming host {port} is already closed"
-            )
+            self.log(f"❓ No host config - assuming host {port} is already closed")
         else:
             process = config.get("process")
             self.log(f"🟡 Stopping host {port} process - {reason}")
@@ -302,31 +266,21 @@ Check console for details.""",
                 workers = [host] + host.children(recursive=True)
                 while True:
                     for w in workers:
-                        result = subprocess.run(
-                            ["kill", "-9", str(w.pid)],
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE,
-                        )
                         # TODO: maybe do something with result
+                        result = subprocess.run(["kill", "-9", str(w.pid)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                     if self.configs.get(port) is not None:
                         del self.configs[port]
                     time.sleep(3)
                     self.log(f"🛑 Host {port} has been stopped")
                     break
 
+            # TODO: maybe do something with result
             result = subprocess.run(
                 ["curl", f"{LOCAL_HOST}{port}/close"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
-            # TODO: maybe do something with result
-            threading.Thread(
-                target=close,
-                args=(
-                    port,
-                    process,
-                ),
-            ).start()
+            threading.Thread(target=close, args=(port, process,), ).start()
         assert with_assert is None, with_assert
         return
 
@@ -334,50 +288,24 @@ Check console for details.""",
         port = address.replace(LOCAL_HOST, "")
         config = self.__get_config_by_address(address)
         if config is None:
-            self.close_host_process(
-                port,
-                "Host not active",
-                with_assert="Host not active.\nCheck console for details.",
-            )
-        # process = config["process"]
-        # last_config = config["last_config"]
+            self.close_host_process(port, "Host not active", with_assert="Host not active.\nCheck console for details.")
 
         try:
-            response = self.post_to_address(
-                address, "generate", data, pbar=pbar
-            )
+            response = self.post_to_address(address, "generate", data, pbar=pbar)
         except requests.exceptions.ConnectionError:
-            self.close_host_process(
-                port,
-                "Connection error",
-                with_assert="Connection error.\nCheck console for details.",
-            )
+            self.close_host_process(port, "Connection error", with_assert="Connection error.\nCheck console for details.")
         except Exception:
-            self.close_host_process(
-                port,
-                "Exception occurred while connecting",
-                with_assert="""Exception occurred while connecting.
-Check console for details.""",
-            )
+            self.close_host_process(port, "Exception occurred while connecting", with_assert="Exception occurred while connecting.\nCheck console for details.")
 
         try:
-            assert response is not None and response.json() is not None, (
-                "No response from host.\nCheck console for details."
-            )
+            assert response is not None and response.json() is not None, "No response from host.\nCheck console for details."
             response_data = response.json()
             output_image_b64 = response_data.get("output")
             output_latent_b64 = response_data.get("latent")
-            assert (
-                output_image_b64 is not None or output_latent_b64 is not None
-            ), response_data.get("message")
+            assert (output_image_b64 is not None or output_latent_b64 is not None), response_data.get("message")
             if output_latent_b64 is not None:
                 return output_image_b64, output_latent_b64
             else:
                 return output_image_b64
         except Exception as e:
-            self.close_host_process(
-                port,
-                "Unknown error",
-                with_assert=f"""An error occurred while generating image.
-Check console for details.\n\n{str(e)}""",
-            )
+            self.close_host_process(port, "Unknown error", with_assert=f"An error occurred while generating image.\nCheck console for details.\n\n{str(e)}")
