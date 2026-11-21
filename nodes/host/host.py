@@ -25,6 +25,7 @@ from ..data_types import (
     ATTN_BACKEND_CONFIG,
     INT_MAX,
     CHECKPOINT,
+    handle_parameter,
 )
 
 
@@ -127,6 +128,7 @@ class ApplyPipeline:
                 "torch": TORCH_CONFIG,
                 "group_offload": GROUP_OFFLOAD_CONFIG,
                 "attn_backend": ATTN_BACKEND_CONFIG,
+                "init_kwargs": PARAM,
             },
         }
 
@@ -137,11 +139,18 @@ class ApplyPipeline:
     def run(self, **kwargs):
         host = kwargs.pop("host")
         pbar = ProgressBar(100)
-        response = hm.post_to_address(host, "apply", kwargs, pbar=pbar)
-        if response is None or response.status_code != 200:
-            hm.close_host_process(host, "Failed to initialize pipeline", with_assert="""Failed to initialize pipeline.
 
-Check console for details.""")
+        if kwargs.get("init_kwargs") is not None:
+            i_k = {}
+            for k, v in kwargs["init_kwargs"].items():
+                key, value = handle_parameter(k, v)
+                i_k[key] = value
+            kwargs["init_kwargs"] = i_k
+
+        response = hm.post_to_address(host, "apply", kwargs, pbar=pbar)
+
+        if response is None or response.status_code != 200:
+            hm.close_host_process(host, "Failed to initialize pipeline", with_assert="Failed to initialize pipeline.\n\nCheck console for details.")
         return (host,)
 
 

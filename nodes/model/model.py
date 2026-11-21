@@ -14,6 +14,8 @@ from ..data_types import (
     UNSAFE_MODELS,
     CHECKPOINT,
     MODEL_TARGETS,
+    PARAM,
+    handle_parameter,
 )
 
 
@@ -53,10 +55,13 @@ class CheckpointSelector:
 
     def run(self, **kwargs):
         kwargs["checkpoint_path"] = os.path.join(get_models_dir(), kwargs["checkpoint_path"])
+
         if kwargs["device_map"] == "none":
             del kwargs["device_map"]
+
         if len(kwargs["class_override"]) == 0:
             del kwargs["class_override"]
+
         return (kwargs,)
 
 
@@ -75,6 +80,7 @@ class ModelCheckpointSelector:
             },
             "optional": {
                 "class_override": CLASS_OVERRIDE,
+                "init_kwargs": PARAM,
             },
         }
 
@@ -84,10 +90,20 @@ class ModelCheckpointSelector:
 
     def run(self, **kwargs):
         kwargs["checkpoint_path"] = os.path.join(get_models_dir(), kwargs["checkpoint_path"])
+
+        if kwargs.get("init_kwargs") is not None:
+            i_k = {}
+            for k, v in kwargs["init_kwargs"].items():
+                key, value = handle_parameter(k, v)
+                i_k[key] = value
+            kwargs["init_kwargs"] = i_k
+
         if kwargs["device_map"] == "none":
             del kwargs["device_map"]
+
         if len(kwargs["class_override"]) == 0:
             del kwargs["class_override"]
+
         return ({kwargs.pop("target"): kwargs},)
 
 
@@ -107,6 +123,7 @@ class ModelSelector:
             },
             "optional": {
                 "class_override": CLASS_OVERRIDE,
+                "init_kwargs": PARAM,
             },
         }
 
@@ -117,10 +134,20 @@ class ModelSelector:
     def run(self, **kwargs):
         kwargs["model_path"] = os.path.join(get_models_dir(), kwargs["model_path"])
         kwargs["config_path"] = os.path.join(get_models_dir(), kwargs["config_path"])
+
+        if kwargs.get("init_kwargs") is not None:
+            i_k = {}
+            for k, v in kwargs["init_kwargs"].items():
+                key, value = handle_parameter(k, v)
+                i_k[key] = value
+            kwargs["init_kwargs"] = i_k
+
         if kwargs["device_map"] == "none":
             del kwargs["device_map"]
+
         if len(kwargs["class_override"]) == 0:
             del kwargs["class_override"]
+
         return ({kwargs.pop("target"): kwargs},)
 
 
@@ -140,6 +167,7 @@ class UnsafeModelSelector:
             },
             "optional": {
                 "class_override": CLASS_OVERRIDE,
+                "init_kwargs": PARAM,
             },
         }
 
@@ -150,10 +178,20 @@ class UnsafeModelSelector:
     def run(self, **kwargs):
         kwargs["model_path"] = os.path.join(get_models_dir(), kwargs["model_path"])
         kwargs["config_path"] = os.path.join(get_models_dir(), kwargs["config_path"])
+
+        if kwargs.get("init_kwargs") is not None:
+            i_k = {}
+            for k, v in kwargs["init_kwargs"].items():
+                key, value = handle_parameter(k, v)
+                i_k[key] = value
+            kwargs["init_kwargs"] = i_k
+
         if kwargs["device_map"] == "none":
             del kwargs["device_map"]
+
         if len(kwargs["class_override"]) == 0:
             del kwargs["class_override"]
+
         return ({kwargs.pop("target"): kwargs},)
 
 
